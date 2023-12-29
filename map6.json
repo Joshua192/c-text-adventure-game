@@ -1,0 +1,63 @@
+{
+  "rooms":[
+  {
+    "id":"outdoor",
+    "desc":"You are in front of a haunted house. You can enter through the front door.",
+    "exits":{"front":"zxcvbn","door":"zxcvbn","front door":"zxcvbn"}
+  },
+  {
+    "id":"zxcvbn",
+    "desc":"There is a laptop looping a video. Someone in it says 'the moment they are watched by any living thing, they literally turn into stone...'\nThere are stairs going down to a cellar, and the door leaving the house.",
+    "exits":{"down":"cellar","cellar":"cellar","back":"outdoor","out":"outdoor","door":"outdoor"}
+  },
+  {
+    "id":"cellar",
+    "desc":"You are in a cellar with no exit other than the stairs back up. At one end of the room there is a blue box. It has doors and it looks like you can go inside.",
+    "exits":{"blue box":"bluebox","up":"zxcvbn"}
+  },
+  {
+    "id":"bluebox",
+    "desc":"The box looks much bigger on the inside! It gets activated and you are teleported to safety.",
+    "exits":{}
+  }
+  ],
+  "objects":[
+  {
+    "id":"key",
+    "desc":"It is an ordinary Yale key.",
+    "initialroom":"zxcvbn"
+  }
+  ],
+  "enemies":[
+  {
+    "id":"stone statue",
+    "desc":"It's holding a key, but it looks like you can just about wriggle it out.",
+    "aggressiveness":0,
+    "initialroom":"zxcvbn",
+    "killedby":[],
+    "intro_msg":"There is a stone statue of an angel. It is covering its face with its hands, like it's weeping.",
+    "successful_kill_msg":"Well you broke it. A key fell off.",
+    "unsuccessful_kill_msg":"(nah)",
+    "unsuccessful_escape_msg":"(nah)"
+  },
+  {
+    "id":"statue",
+    "desc":"It doesn't move when you look at it, but in-between each look it got closer!",
+    "aggressiveness":50,
+    "initialroom":"cellar",
+    "killedby":["nothing"],
+    "intro_msg":"There is another of those statue, but this one shows its scary face!",
+    "successful_kill_msg":"(nah)",
+    "unsuccessful_kill_msg":"You can't kill a stone. But you blinked, and in that split second that you're not looking, the statue reached you and killed you.",
+    "unsuccessful_escape_msg":"You tried to escape but the statue is too fast! While you are not looking at it the statue reached you and killed you."
+  }
+  ],
+  "player":{
+    "initialroom":"outdoor"
+  },
+  "objective":{
+    "type":"room",
+    "what":["bluebox"]
+  }
+}
+

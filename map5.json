@@ -1,0 +1,84 @@
+{
+  "rooms":[
+  {
+    "id":"lobby",
+    "desc":"There is a door in front of you.",
+    "exits":{"front":"catroom"}
+  },
+  {
+    "id":"catroom",
+    "desc":"There is a door in front of you.",
+    "exits":{"front":"corridor"}
+  },
+  {
+    "id":"corridor",
+    "desc":"You are in a narrow corridor with many doors, but there is a special door at the far end of the corridor.",
+    "exits":{"far end":"tvroom"}
+  },
+  {
+    "id":"tvroom",
+    "desc":"You are in a white room with many TV screens. An old man turns around and says 'I am the architect...' he goes on to speak in a very monotone voice and with many unnecessarily complex words so I'll skip all that. Anyway there are two doors, one to your left and one to your right.",
+    "exits":{"left":"street","right":"lobby"}
+  },
+  {
+    "id":"street",
+    "desc":"You are outdoors, in a street lined with many agents. It is raining very heavily.",
+    "exits":{}
+  }
+  ],
+  "objects":[
+  {
+    "id":"gun",
+    "desc":"It is a normal hand gun.",
+    "initialroom":"lobby"
+  },
+  {
+    "id":"cat",
+    "desc":"It looks totally harmless. But have you seen this cat before?",
+    "initialroom":"catroom"
+  }
+  ],
+  "enemies":[
+  {
+    "id":"agent",
+    "desc":"The agent is wearing sunglasses and an earpiece.",
+    "aggressiveness":100,
+    "initialroom":"catroom",
+    "killedby":["gun"],
+    "intro_msg":"There is an agent!",
+    "successful_kill_msg":"You shot him dead.",
+    "unsuccessful_kill_msg":"You are overpowered by the agent and get killed.",
+    "unsuccessful_escape_msg":"You ignored the agent but he killed you."
+  },
+  {
+    "id":"agents",
+    "aggressiveness":100,
+    "desc":"They all look identical.",
+    "initialroom":"corridor",
+    "killedby":[],
+    "intro_msg":"There are many agents!",
+    "successful_kill_msg":"You defeated some of them with your bare hands (coz you know kung-fu!) and while your teammates (yes you have teammates, I forgot to mention that bit) engage the others, you see that door is open.",
+    "unsuccessful_kill_msg":"(nah you'll never see this)",
+    "unsuccessful_escape_msg":"You try going to the door straight but there are too many agents and they killed you."
+  },
+  {
+    "id":"Agent Smith",
+    "desc":"You met him many times before. He is very angry.",
+    "aggressiveness":100,
+    "initialroom":"street",
+    "killedby":[],
+    "intro_msg":"Agent Smith is standing in the middle of the street.",
+    "successful_kill_msg":"After a dragonball style fight you eventually won!",
+    "unsuccessful_kill_msg":"(nah)",
+    "unsuccessful_escape_msg":"(nah)"
+  }
+  ],
+  "player":{
+    "initialroom":"lobby"
+  },
+  "objective":{
+    "type":"kill",
+    "what":["Agent Smith"]
+  }
+}
+
