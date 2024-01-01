@@ -46,6 +46,7 @@ public:
 
     void checkObjective(const string &argument, json &mapData, Player &player)
     {
+        // cout << endl;
         if (player.objectiveType == "collect")
         {
             bool collectedItems = true;
@@ -148,7 +149,8 @@ public:
                 }
                 if (!killedEnemies)
                 { // not all enemies have been killed. Continue game.
-                    // cout << "Objective Check reached. Player hasn't killed all required enemies yet. " << endl;
+                    // "Objective Check reached. Player hasn't killed all required enemies yet."
+                    // cout << endl;
                     return;
                 }
             }
@@ -199,6 +201,7 @@ public:
                     {
                         objectDescString = object["desc"];
                         cout << objectDescString << endl;
+                        // cout << endl;
                         return;
                     }
                 }
@@ -213,6 +216,7 @@ public:
             {
                 objectDescString = object["desc"];
                 cout << objectDescString << endl; // You should only be able to see desc if you type "look gun" for example
+                // cout << endl;
                 return;
             }
         }
@@ -221,10 +225,10 @@ public:
         {
             if (enemy["id"] == argument && enemy["initialroom"] == player.currentRoomId)
             {
-
                 enemyDescString = enemy["desc"];
 
                 cout << enemyDescString << endl;
+                // cout << endl;
                 return; // Break out.
             }
         }
@@ -252,25 +256,28 @@ public:
                 cout << "There is a " << objectName << endl;
             }
         }
-
-        // Finally, list enemies in the room, try to find intro message
-        string introMsg;
+        // Finally, list enemies in the room, try to find intro message.
         for (const auto &enemy : mapData["enemies"])
         {
+
             if (enemy["initialroom"] == player.currentRoomId)
             {
+                string introMsg;
+                auto introMsgIterator = enemy.find("intro_msg");
+
                 string enemyName;
-                try
+                if (introMsgIterator != enemy.end())
                 {
-                    introMsg = enemy["intro_msg"].get<string>();
+                    introMsg = introMsgIterator->get<string>();
                 }
-                catch (const json::exception &e)
+                else
                 {
-                    enemyName = enemy["id"];
+                    enemyName = enemy.value("id", "strange enemy");
                     introMsg = "There is a " + enemyName + ".";
                 }
 
                 cout << introMsg << endl;
+                // cout << endl;
                 return;
             }
         }
@@ -278,6 +285,8 @@ public:
 
     void move(const string &argument, json &mapData, Player &player)
     {
+        // cout << endl;
+
         // iterate through exits and match.
         //  if not found, print => "I don't understand move", arguement.
 
@@ -286,7 +295,6 @@ public:
         { // Ideally it should only run this check if there are enemies remaining here.
             if (enemy["initialroom"] == player.currentRoomId)
             {
-                // cout << "enemy check" << endl;
                 string failedEscapeMessage;
                 int randint = rand() % 100;
                 if (randint <= enemy["aggressiveness"])
@@ -317,8 +325,6 @@ public:
                 if (exitIt != exits.end())
                 {
                     currentRoomId = exits[argument];
-                    // cout << "success! You've moved rooms!" << endl;
-                    // cout << "Room updated to : " << currentRoomId << endl;
                     lookAround(argument, mapData, player);
                     return;
                 }
@@ -333,6 +339,7 @@ public:
 
     void take(const string &argument, json &mapData, Player &player)
     {
+        // cout << endl;
         // Iterate through objects
         for (auto &object : mapData["objects"])
         {
@@ -354,15 +361,18 @@ public:
                 else
                 {
                     cout << argument << " not in this room. It can't be taken." << endl;
+                    // cout << endl;
                     return;
                 }
             }
         }
         cout << "I don't understand take " << argument << endl;
+        // cout << endl;
     }
 
     void listItems(const string &argument, json &mapData, Player &player)
     {
+        // cout << endl;
         string strInventory;
         if (player.inventory.empty())
         {
@@ -386,14 +396,14 @@ public:
                 }
             }
             cout << "Player Inventory: [" << strInventory << "]" << endl;
+            // cout << endl;
             return;
         }
     }
 
     void kill(const string &argument, json &mapData, Player &player)
     {
-        // 5. kill / attack
-
+        // cout << endl;
         // Check enemy
         for (auto &enemyInstance : mapData["enemies"])
         {                                        // iterate through inventory
@@ -458,6 +468,7 @@ public:
                 else
                 {
                     cout << "This enemy is not in the same room as you." << endl;
+                    // cout << endl;
                 }
             }
         }
@@ -466,6 +477,7 @@ public:
     void failedInput()
     {
         cout << "Command not found. Try Again" << endl;
+        // cout << endl;
     }
 };
 
@@ -543,8 +555,6 @@ int main()
     {
         cout << "Select one of the maps below using the numbers: ";
         int i;
-        // changed to 1 so I dont need to keep typing it
-        // i = 2, cout << endl; // REMOVE THIS
         cin >> i;
 
         try
@@ -608,7 +618,7 @@ int main()
     {
         // Found the "initialroom" key in the JSON data
         player.currentRoomId = it.value();
-        cout << "Player Initial Room set to : " << player.currentRoomId << endl;
+        // cout << "Player Initial Room set to : " << player.currentRoomId << endl;
     }
     else
     {
@@ -642,7 +652,10 @@ int main()
         GameMap.enemyList.push_back(enemy);
     }
 
+    cout << endl;
     player.lookAround("", j, player);
+    cout << endl
+         << "> ";
 
     // Unorderded Map "commands"
     unordered_map<string, CommandType>
@@ -666,7 +679,7 @@ int main()
     // Player Text Input Loop
     while (true)
     {
-        cout << endl;
+        // cout << endl;
         string input, playercmd, argument;
 
         getline(cin, input);
@@ -703,7 +716,7 @@ int main()
         // Hard coded because a function isn't neccessary for this.
         if (playercmd == "quit" || playercmd == "exit")
         {
-            cout << "Quitting game, goodbye" << endl;
+            cout << "Quitting game, goodbye." << endl;
             exit(0);
         }
 
@@ -712,12 +725,16 @@ int main()
         {
             cout << endl;
             (player.*(it->second))(argument, j, player);
+            cout << endl
+                 << "> ";
         }
         else
         {
             cout << endl;
             // Unexpected input. Try again
             player.failedInput();
+            cout << endl
+                 << "> ";
         }
     }
 }
